@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "report-generator": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "env": {
+        "DATABASE_URL": "postgresql://user:password@localhost/reports",
+        "REDIS_URL": "redis://localhost:6379/0",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
