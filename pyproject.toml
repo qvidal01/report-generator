@@ -1,0 +1,204 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "report-generator"
+version = "1.0.0"
+description = "Multi-source data aggregation and report generation tool"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "AIQSO", email = "contact@aiqso.io"}
+]
+keywords = ["reports", "data", "analytics", "pdf", "excel", "automation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "pandas>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "pymongo>=4.5.0",
+    "requests>=2.31.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "jinja2>=3.1.0",
+    "weasyprint>=60.0",
+    "openpyxl>=3.1.0",
+    "plotly>=5.18.0",
+    "pillow>=10.1.0",
+    "fastapi>=0.105.0",
+    "uvicorn[standard]>=0.25.0",
+    "click>=8.1.0",
+    "apscheduler>=3.10.0",
+    "redis>=5.0.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.1",
+    "structlog>=23.3.0",
+    "slowapi>=0.1.9",
+    "httpx>=0.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.12.0",
+    "ruff>=0.1.8",
+    "mypy>=1.7.0",
+    "pre-commit>=3.6.0",
+    "types-requests>=2.31.0",
+    "types-pyyaml>=6.0.12",
+    "httpx>=0.25.0",
+]
+mcp = [
+    "mcp>=0.9.0",
+]
+celery = [
+    "celery>=5.3.0",
+]
+monitoring = [
+    "prometheus-client>=0.19.0",
+    "sentry-sdk>=1.39.0",
+]
+
+[project.scripts]
+report-generator = "report_generator.cli.main:cli"
+
+[project.urls]
+Homepage = "https://github.com/qvidal01/report-generator"
+Documentation = "https://github.com/qvidal01/report-generator/blob/main/docs"
+Repository = "https://github.com/qvidal01/report-generator"
+Issues = "https://github.com/qvidal01/report-generator/issues"
+
+[tool.setuptools]
+packages = ["report_generator"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+report_generator = ["py.typed"]
+
+# Black configuration
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# Ruff configuration
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "UP", # pyupgrade
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # unused imports in __init__.py
+"tests/*" = ["S101"]  # assert allowed in tests
+
+# Mypy configuration
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+follow_imports = "normal"
+strict_equality = true
+ignore_missing_imports = false
+
+[[tool.mypy.overrides]]
+module = [
+    "weasyprint.*",
+    "plotly.*",
+    "apscheduler.*",
+    "slowapi.*",
+]
+ignore_missing_imports = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--cov=report_generator",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--strict-markers",
+    "-v",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+    "security: Security tests",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "@abc.abstractmethod",
+]
