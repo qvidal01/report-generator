@@ -2,11 +2,13 @@
 
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ReportConfig(BaseModel):
     """Configuration for a single report."""
+
+    model_config = ConfigDict(extra="allow")
 
     name: str = Field(description="Report name")
     template: str = Field(description="Template name or path")
@@ -17,8 +19,3 @@ class ReportConfig(BaseModel):
     )
     parameters: dict[str, Any] = Field(default_factory=dict, description="Template parameters")
     delivery: dict[str, Any] | None = Field(default=None, description="Delivery configuration")
-
-    class Config:
-        """Pydantic config."""
-
-        extra = "allow"
