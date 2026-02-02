@@ -1,9 +1,17 @@
 """Tests for utility functions."""
 
+from datetime import datetime
+
 import pytest
 
 from report_generator.utils.exceptions import ValidationError
-from report_generator.utils.helpers import format_duration, generate_id, hash_string
+from report_generator.utils.helpers import (
+    format_duration,
+    format_timestamp,
+    generate_id,
+    hash_string,
+    safe_get,
+)
 from report_generator.utils.validators import (
     validate_cron,
     validate_email,
@@ -87,3 +95,52 @@ class TestHelpers:
         assert format_duration(500) == "500ms"
         assert format_duration(1500) == "1.50s"
         assert format_duration(1000) == "1.00s"
+
+    def test_format_timestamp_with_datetime(self) -> None:
+        """Test timestamp formatting with specific datetime."""
+        dt = datetime(2025, 11, 19, 10, 30, 0)
+        result = format_timestamp(dt)
+
+        assert result == "2025-11-19T10:30:00Z"
+
+    def test_format_timestamp_default(self) -> None:
+        """Test timestamp formatting with default (now)."""
+        result = format_timestamp()
+
+        # Should be a valid ISO 8601 format
+        assert "T" in result
+        assert result.endswith("Z")
+        assert len(result) == 20
+
+    def test_safe_get_simple_key(self) -> None:
+        """Test safe_get with simple key."""
+        data = {"name": "John", "age": 30}
+
+        assert safe_get(data, "name") == "John"
+        assert safe_get(data, "age") == 30
+
+    def test_safe_get_nested_key(self) -> None:
+        """Test safe_get with nested dot notation key."""
+        data = {"user": {"profile": {"name": "John", "email": "john@example.com"}}}
+
+        assert safe_get(data, "user.profile.name") == "John"
+        assert safe_get(data, "user.profile.email") == "john@example.com"
+
+    def test_safe_get_missing_key_with_default(self) -> None:
+        """Test safe_get with missing key returns default."""
+        data = {"name": "John"}
+
+        assert safe_get(data, "age", 0) == 0
+        assert safe_get(data, "user.profile.name", "Unknown") == "Unknown"
+
+    def test_safe_get_missing_key_no_default(self) -> None:
+        """Test safe_get with missing key and no default returns None."""
+        data = {"name": "John"}
+
+        assert safe_get(data, "missing") is None
+
+    def test_safe_get_partial_path(self) -> None:
+        """Test safe_get when partial path exists but not full path."""
+        data = {"user": {"name": "John"}}
+
+        assert safe_get(data, "user.profile.name", "N/A") == "N/A"

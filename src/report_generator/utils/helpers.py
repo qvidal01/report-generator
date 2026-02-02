@@ -79,7 +79,8 @@ def format_timestamp(dt: datetime | None = None) -> str:
         '2025-11-19T10:30:00Z'
     """
     if dt is None:
-        dt = datetime.utcnow()
+        from datetime import timezone
+        dt = datetime.now(timezone.utc)
     return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
