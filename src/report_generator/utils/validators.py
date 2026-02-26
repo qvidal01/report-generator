@@ -56,7 +56,7 @@ def validate_url(url: str) -> bool:
             )
         return True
     except Exception as e:
-        raise ValidationError(f"Invalid URL: {url} - {e}", field="url")
+        raise ValidationError(f"Invalid URL: {url} - {e}", field="url") from e
 
 
 def validate_cron(cron_expression: str) -> bool:
@@ -86,7 +86,7 @@ def validate_cron(cron_expression: str) -> bool:
         )
 
     # Basic validation of each part
-    for i, part in enumerate(parts):
+    for part in parts:
         # Allow numbers, ranges, wildcards, steps, and day names
         if not re.match(r"^[\d\-\*\/,A-Z]+$", part):
             raise ValidationError(

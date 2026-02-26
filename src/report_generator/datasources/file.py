@@ -99,7 +99,7 @@ class FileSource(DataSource):
             logger.error("fetch_failed", source=self.name, error=str(e))
             raise DataSourceError(
                 f"Failed to read file '{self.name}': {e}", source_type="file"
-            )
+            ) from e
 
     def test_connection(self) -> bool:
         """
@@ -134,4 +134,4 @@ class FileSource(DataSource):
             raise DataSourceError(
                 f"File connection test failed for '{self.name}': {e}",
                 source_type="file",
-            )
+            ) from e

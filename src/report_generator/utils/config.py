@@ -90,11 +90,13 @@ def load_config(config_path: str | Path) -> dict[str, Any]:
                     "Use .yaml, .yml, or .json"
                 )
     except yaml.YAMLError as e:
-        raise ConfigurationError(f"Invalid YAML syntax in {config_path}: {e}")
+        raise ConfigurationError(f"Invalid YAML syntax in {config_path}: {e}") from e
     except json.JSONDecodeError as e:
-        raise ConfigurationError(f"Invalid JSON syntax in {config_path}: {e}")
+        raise ConfigurationError(f"Invalid JSON syntax in {config_path}: {e}") from e
     except Exception as e:
-        raise ConfigurationError(f"Error loading configuration from {config_path}: {e}")
+        raise ConfigurationError(
+            f"Error loading configuration from {config_path}: {e}"
+        ) from e
 
 
 def get_config() -> Config:

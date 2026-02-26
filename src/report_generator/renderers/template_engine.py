@@ -52,7 +52,10 @@ class Template:
         try:
             self.template = self.env.from_string(self.template_string)
         except Exception as e:
-            raise TemplateError(f"Failed to parse template: {e}", template_path=str(template_path) if template_path else None)
+            raise TemplateError(
+                f"Failed to parse template: {e}",
+                template_path=str(template_path) if template_path else None,
+            ) from e
 
     @classmethod
     def from_file(cls, template_path: str | Path) -> "Template":
@@ -112,7 +115,7 @@ class Template:
             return html
         except Exception as e:
             logger.error("template_render_failed", error=str(e))
-            raise RenderError(f"Failed to render template: {e}")
+            raise RenderError(f"Failed to render template: {e}") from e
 
     def render_to_pdf(self, context: dict[str, Any] | None = None) -> bytes:
         """
@@ -144,7 +147,7 @@ class Template:
             raise RenderError(
                 "WeasyPrint not installed. Install with: pip install weasyprint",
                 output_format="pdf",
-            )
+            ) from None
         except Exception as e:
             logger.error("pdf_generation_failed", error=str(e))
-            raise RenderError(f"Failed to generate PDF: {e}", output_format="pdf")
+            raise RenderError(f"Failed to generate PDF: {e}", output_format="pdf") from e

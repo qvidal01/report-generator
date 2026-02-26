@@ -161,11 +161,9 @@ class ReportEngine:
                 data_frames[key] = df
 
             # Step 2: Combine data (simple concatenation for now)
-            if len(data_frames) == 1:
-                combined_data = list(data_frames.values())[0]
-            else:
-                # For multiple sources, make them available as dict
-                combined_data = data_frames
+            combined_data = (
+                list(data_frames.values())[0] if len(data_frames) == 1 else data_frames
+            )
 
             # Step 3: Load template if string path provided
             if isinstance(template, str):
@@ -221,7 +219,7 @@ class ReportEngine:
                 error=str(e),
                 duration=format_duration(duration_ms),
             )
-            raise ReportGeneratorError(f"Report generation failed: {e}")
+            raise ReportGeneratorError(f"Report generation failed: {e}") from e
 
     def _render_excel(self, data: pd.DataFrame | dict[str, pd.DataFrame]) -> bytes:
         """

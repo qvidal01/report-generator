@@ -163,13 +163,13 @@ class APISource(DataSource):
             logger.error("fetch_failed", source=self.name, error=str(e))
             raise DataSourceError(
                 f"Failed to fetch data from API '{self.name}': {e}", source_type="api"
-            )
+            ) from e
         except Exception as e:
             logger.error("fetch_failed", source=self.name, error=str(e))
             raise DataSourceError(
                 f"Failed to process API response from '{self.name}': {e}",
                 source_type="api",
-            )
+            ) from e
 
     def test_connection(self) -> bool:
         """
@@ -197,4 +197,4 @@ class APISource(DataSource):
             logger.error("connection_test_failed", source=self.name, error=str(e))
             raise DataSourceError(
                 f"API connection test failed for '{self.name}': {e}", source_type="api"
-            )
+            ) from e

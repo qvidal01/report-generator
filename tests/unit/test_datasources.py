@@ -1,16 +1,15 @@
 """Tests for data source implementations."""
 
 import json
-import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
 
-from report_generator.datasources.file import FileSource
 from report_generator.datasources.api import APISource
 from report_generator.datasources.database import DatabaseSource
+from report_generator.datasources.file import FileSource
 from report_generator.utils.exceptions import DataSourceError, ValidationError
 
 

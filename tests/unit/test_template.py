@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from report_generator.renderers.template_engine import Template
-from report_generator.utils.exceptions import RenderError, TemplateError
+from report_generator.utils.exceptions import TemplateError
 
 
 class TestTemplate:

@@ -68,7 +68,7 @@ class DatabaseSource(DataSource):
             except Exception as e:
                 raise DataSourceError(
                     f"Failed to create database engine: {e}", source_type="database"
-                )
+                ) from e
         return self._engine
 
     def fetch(self) -> pd.DataFrame:
@@ -113,7 +113,7 @@ class DatabaseSource(DataSource):
             raise DataSourceError(
                 f"Failed to fetch data from database '{self.name}': {e}",
                 source_type="database",
-            )
+            ) from e
 
     def test_connection(self) -> bool:
         """
@@ -136,7 +136,7 @@ class DatabaseSource(DataSource):
             raise DataSourceError(
                 f"Database connection test failed for '{self.name}': {e}",
                 source_type="database",
-            )
+            ) from e
 
     def close(self) -> None:
         """Close database connection and dispose engine."""

@@ -10,7 +10,7 @@ from typing import Any
 
 try:
     from mcp.server import Server
-    from mcp.types import Resource, TextContent, Tool
+    from mcp.types import TextContent
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
@@ -206,7 +206,7 @@ class ReportGeneratorMCPServer:
                     )]
 
                 # Test connection
-                success = ds.test_connection()
+                ds.test_connection()
                 return [TextContent(
                     type="text",
                     text=f"✅ Connection successful to {source_type} source!"
