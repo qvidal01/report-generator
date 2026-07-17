@@ -89,3 +89,19 @@ pytest
 - `ISSUES_FOUND.md` - Historical pre-implementation analysis (2025-11)
 - `IMPROVEMENT_PLAN.md` - Roadmap
 - `docs/RUNBOOK.md` - Fleet runbook
+
+---
+
+## MCP Servers & Tools
+
+<!-- Auto-generated: which MCP servers Claude should use in this project -->
+
+| Server | Purpose |
+|--------|---------|
+| `docker` | Docker container management — use for building, deploying, and monitoring containers |
+
+### Agents & Skills
+
+**Agents:** Use `Explore` agent for report template and MCP server analysis.
+
+**Skills:** Run `qg-python` before pushing.
