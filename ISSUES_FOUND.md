@@ -1,5 +1,7 @@
 # Issues Found & Technical Debt Assessment
 
+> **📜 Historical document (2025-11-19).** This pre-implementation analysis predates the codebase and is kept for reference. Much of it has since been addressed (source code, test suite at ~84% coverage, CI pipeline, type checking, pinned dependencies). For current status see `CLAUDE.md`; for the roadmap see `IMPROVEMENT_PLAN.md`.
+
 **Project:** Report Generator
 **Analysis Date:** 2025-11-19
 **Status:** Initial scaffold (no existing code to audit)

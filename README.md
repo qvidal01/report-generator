@@ -10,15 +10,20 @@ Multi-source data aggregation and report generation tool. Pull data from databas
 
 ## ✨ Features
 
+**Implemented:**
+
 - **🔌 Multi-Source Connectivity** - Connect to PostgreSQL, MySQL, MongoDB, REST APIs, CSV, Excel, and more
 - **🎨 Customizable Templates** - Design reports with Jinja2 templates and custom CSS styling
-- **📅 Automated Scheduling** - Generate reports on a schedule with cron expressions
-- **📧 Smart Delivery** - Email, webhook, or S3 delivery with automatic retries
 - **📊 Rich Visualizations** - Create charts and graphs with Plotly
-- **🚀 REST API** - Programmatic access with FastAPI and automatic OpenAPI docs
-- **⚡ High Performance** - Async data fetching, caching, and parallel processing
 - **🔒 Security First** - Environment-based secrets, input validation, sandboxed templates
 - **🤖 MCP Server** - Integrate with AI assistants via Model Context Protocol
+
+**Planned (🚧 not yet implemented):**
+
+- **📅 Automated Scheduling** - Generate reports on a schedule with cron expressions
+- **📧 Smart Delivery** - Email, webhook, or S3 delivery with automatic retries
+- **🚀 REST API** - Programmatic access with FastAPI and automatic OpenAPI docs
+- **⚡ High Performance** - Async data fetching, caching, and parallel processing
 
 ## 📋 Table of Contents
 
@@ -143,20 +148,12 @@ API_KEY=your-secret-api-key
 # Generate a report from config file
 report-generator generate config/sales_report.yaml --output report.pdf
 
-# Schedule a recurring report
-report-generator schedule config/daily_metrics.yaml --cron "0 9 * * *"
-
-# List scheduled reports
-report-generator schedule list
-
-# Test data source connection
-report-generator datasource test config/postgres_config.yaml
-
-# Start API server
-report-generator serve --host 0.0.0.0 --port 8080
-
-# Validate configuration
-report-generator validate config/report.yaml
+# 🚧 Planned commands (not yet implemented):
+#   report-generator schedule <config> --cron "0 9 * * *"
+#   report-generator schedule list
+#   report-generator datasource test <config>
+#   report-generator serve --host 0.0.0.0 --port 8080   # currently a stub
+#   report-generator validate <config>
 
 # Show version
 report-generator --version
@@ -192,13 +189,17 @@ report = engine.generate(
     params={"title": "Weekly Sales Report", "date": "2025-11-19"}
 )
 
-# Save or deliver
+# Save the report
 report.save("output/weekly_sales.pdf")
-report.email(to="team@example.com", subject="Weekly Report")
-report.upload_to_s3(bucket="reports", key="weekly_sales.pdf")
+
+# 🚧 Planned (currently raise NotImplementedError):
+# report.email(to="team@example.com", subject="Weekly Report")
+# report.upload_to_s3(bucket="reports", key="weekly_sales.pdf")
 ```
 
 ### REST API
+
+> **🚧 Planned — not yet implemented.** The API design below is the target spec; `src/report_generator/api/` is currently a stub and `report-generator serve` does not start a server yet.
 
 Start the server:
 
@@ -251,14 +252,11 @@ See the [`examples/`](./examples) directory for complete examples:
 
 - **[basic_report.py](./examples/basic_report.py)** - Simple report from a single data source
 - **[multi_source_report.py](./examples/multi_source_report.py)** - Combining data from multiple sources
-- **[scheduled_report.py](./examples/scheduled_report.py)** - Setting up automated report generation
-- **[custom_template.py](./examples/custom_template.py)** - Creating custom templates with charts
-- **[api_usage.py](./examples/api_usage.py)** - Using the REST API programmatically
 
 ## 📘 Documentation
 
 - **[ANALYSIS_SUMMARY.md](./ANALYSIS_SUMMARY.md)** - Architecture and design decisions
-- **[ISSUES_FOUND.md](./ISSUES_FOUND.md)** - Known issues and limitations
+- **[ISSUES_FOUND.md](./ISSUES_FOUND.md)** - Historical pre-implementation analysis (2025-11)
 - **[IMPROVEMENT_PLAN.md](./IMPROVEMENT_PLAN.md)** - Roadmap and future enhancements
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
 - **[docs/API_REFERENCE.md](./docs/API_REFERENCE.md)** - Complete API documentation
@@ -299,6 +297,8 @@ mypy src/
 ```
 
 ## 🐳 Docker
+
+> **🚧 Planned — no `Dockerfile` or `docker-compose.yml` exists yet.** The commands below are the target workflow.
 
 ```bash
 # Build image
