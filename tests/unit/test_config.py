@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 import yaml
-
 from report_generator.utils.config import Config, get_config, load_config
 from report_generator.utils.exceptions import ConfigurationError
 

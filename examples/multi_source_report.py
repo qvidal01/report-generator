@@ -17,7 +17,6 @@ import json
 from pathlib import Path
 
 import pandas as pd
-
 from report_generator import DataSource, ReportEngine, Template
 
 
@@ -27,11 +26,13 @@ def create_sample_data():
     sales_file = Path("examples/data/sales.csv")
     sales_file.parent.mkdir(parents=True, exist_ok=True)
 
-    df_sales = pd.DataFrame({
-        "product": ["Widget A", "Widget B", "Widget C"],
-        "units_sold": [150, 230, 180],
-        "revenue": [1500.00, 2300.00, 1800.00],
-    })
+    df_sales = pd.DataFrame(
+        {
+            "product": ["Widget A", "Widget B", "Widget C"],
+            "units_sold": [150, 230, 180],
+            "revenue": [1500.00, 2300.00, 1800.00],
+        }
+    )
     df_sales.to_csv(sales_file, index=False)
 
     # Create metrics JSON (simulating API response)
@@ -202,10 +203,7 @@ def main():
         template=template,
         sources=[sales_source, metrics_source],
         output_format="html",
-        params={
-            "title": "Monthly Performance Report",
-            "date": "November 2025"
-        }
+        params={"title": "Monthly Performance Report", "date": "November 2025"},
     )
 
     # Step 5: Save report

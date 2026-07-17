@@ -123,9 +123,7 @@ class APISource(DataSource):
                     timeout=self.timeout,
                 )
             else:
-                raise DataSourceError(
-                    f"Unsupported HTTP method: {self.method}", source_type="api"
-                )
+                raise DataSourceError(f"Unsupported HTTP method: {self.method}", source_type="api")
 
             # Raise exception for 4xx/5xx status codes
             response.raise_for_status()

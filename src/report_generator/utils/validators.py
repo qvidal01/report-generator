@@ -51,9 +51,7 @@ def validate_url(url: str) -> bool:
         if not all([result.scheme, result.netloc]):
             raise ValidationError(f"Invalid URL format: {url}", field="url")
         if result.scheme not in ["http", "https", "ftp", "ftps"]:
-            raise ValidationError(
-                f"Unsupported URL scheme: {result.scheme}", field="url"
-            )
+            raise ValidationError(f"Unsupported URL scheme: {result.scheme}", field="url")
         return True
     except Exception as e:
         raise ValidationError(f"Invalid URL: {url} - {e}", field="url") from e
@@ -89,9 +87,7 @@ def validate_cron(cron_expression: str) -> bool:
     for part in parts:
         # Allow numbers, ranges, wildcards, steps, and day names
         if not re.match(r"^[\d\-\*\/,A-Z]+$", part):
-            raise ValidationError(
-                f"Invalid cron expression part: {part}", field="cron"
-            )
+            raise ValidationError(f"Invalid cron expression part: {part}", field="cron")
 
     return True
 

@@ -3,7 +3,6 @@
 from datetime import datetime
 
 import pytest
-
 from report_generator.utils.exceptions import ValidationError
 from report_generator.utils.helpers import (
     format_duration,

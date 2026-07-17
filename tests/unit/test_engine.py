@@ -4,7 +4,6 @@ import json
 from typing import Any
 
 import pandas as pd
-
 from report_generator.core.engine import ReportEngine
 from report_generator.datasources.base import DataSource
 from report_generator.renderers.template_engine import Template

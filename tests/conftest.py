@@ -7,11 +7,13 @@ import pytest
 @pytest.fixture
 def sample_dataframe() -> pd.DataFrame:
     """Create a sample DataFrame for testing."""
-    return pd.DataFrame({
-        "product": ["Widget A", "Widget B", "Widget C"],
-        "sales": [100, 200, 150],
-        "revenue": [1000.0, 2000.0, 1500.0],
-    })
+    return pd.DataFrame(
+        {
+            "product": ["Widget A", "Widget B", "Widget C"],
+            "sales": [100, 200, 150],
+            "revenue": [1000.0, 2000.0, 1500.0],
+        }
+    )
 
 
 @pytest.fixture

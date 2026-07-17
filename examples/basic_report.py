@@ -14,7 +14,6 @@ Usage:
 from pathlib import Path
 
 import pandas as pd
-
 from report_generator import DataSource, ReportEngine, Template
 
 
@@ -24,12 +23,14 @@ def create_sample_data():
     data_file.parent.mkdir(parents=True, exist_ok=True)
 
     if not data_file.exists():
-        df = pd.DataFrame({
-            "product": ["Widget A", "Widget B", "Widget C", "Widget D", "Widget E"],
-            "sales": [150, 230, 180, 295, 210],
-            "revenue": [1500.00, 2300.00, 1800.00, 2950.00, 2100.00],
-            "region": ["North", "South", "East", "West", "North"],
-        })
+        df = pd.DataFrame(
+            {
+                "product": ["Widget A", "Widget B", "Widget C", "Widget D", "Widget E"],
+                "sales": [150, 230, 180, 295, 210],
+                "revenue": [1500.00, 2300.00, 1800.00, 2950.00, 2100.00],
+                "region": ["North", "South", "East", "West", "North"],
+            }
+        )
         df.to_csv(data_file, index=False)
         print(f"✅ Created sample data: {data_file}")
 
@@ -137,10 +138,7 @@ def main():
         template=template,
         sources=[source],
         output_format="html",  # Use HTML for quick preview
-        params={
-            "title": "Sales Report",
-            "date": "2025-11-19"
-        }
+        params={"title": "Sales Report", "date": "2025-11-19"},
     )
 
     # Step 5: Save report
@@ -160,10 +158,7 @@ def main():
             template=template,
             sources=[source],
             output_format="pdf",
-            params={
-                "title": "Sales Report",
-                "date": "2025-11-19"
-            }
+            params={"title": "Sales Report", "date": "2025-11-19"},
         )
         pdf_output = "output/basic_report.pdf"
         pdf_report.save(pdf_output)

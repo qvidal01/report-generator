@@ -11,6 +11,7 @@ from typing import Any
 try:
     from mcp.server import Server
     from mcp.types import TextContent
+
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
@@ -43,13 +44,13 @@ class ReportGeneratorMCPServer:
 
         @self.server.tool(
             name="generate_report",
-            description="Generate a report from specified data sources and template"
+            description="Generate a report from specified data sources and template",
         )
         async def generate_report(
             template: str,
             sources: list[dict[str, Any]],
             output_format: str = "pdf",
-            parameters: dict[str, Any] | None = None
+            parameters: dict[str, Any] | None = None,
         ) -> list[TextContent]:
             """
             Generate a report.
@@ -68,7 +69,7 @@ class ReportGeneratorMCPServer:
                     "mcp_generate_report",
                     template=template[:50],
                     num_sources=len(sources),
-                    format=output_format
+                    format=output_format,
                 )
 
                 # Parse data sources
@@ -79,19 +80,19 @@ class ReportGeneratorMCPServer:
                         ds = DataSource.from_database(
                             connection_string=source_config["connection_string"],
                             query=source_config["query"],
-                            name=source_config.get("name", "database")
+                            name=source_config.get("name", "database"),
                         )
                     elif source_type == "api":
                         ds = DataSource.from_api(
                             url=source_config["url"],
                             method=source_config.get("method", "GET"),
                             auth_token=source_config.get("auth_token"),
-                            name=source_config.get("name", "api")
+                            name=source_config.get("name", "api"),
                         )
                     elif source_type == "file":
                         ds = DataSource.from_file(
                             file_path=source_config["file_path"],
-                            name=source_config.get("name", "file")
+                            name=source_config.get("name", "file"),
                         )
                     else:
                         raise ValueError(f"Unsupported source type: {source_type}")
@@ -110,33 +111,29 @@ class ReportGeneratorMCPServer:
                     template=tmpl,
                     sources=data_sources,
                     output_format=output_format,
-                    params=parameters or {}
+                    params=parameters or {},
                 )
 
                 # Save report
                 output_path = f"output/{report.report_id}.{output_format}"
                 report.save(output_path)
 
-                return [TextContent(
-                    type="text",
-                    text=f"Report generated successfully!\n"
-                         f"Report ID: {report.report_id}\n"
-                         f"Format: {output_format}\n"
-                         f"Size: {len(report.content)} bytes\n"
-                         f"Saved to: {output_path}"
-                )]
+                return [
+                    TextContent(
+                        type="text",
+                        text=f"Report generated successfully!\n"
+                        f"Report ID: {report.report_id}\n"
+                        f"Format: {output_format}\n"
+                        f"Size: {len(report.content)} bytes\n"
+                        f"Saved to: {output_path}",
+                    )
+                ]
 
             except Exception as e:
                 logger.error("mcp_generate_report_failed", error=str(e))
-                return [TextContent(
-                    type="text",
-                    text=f"Error generating report: {str(e)}"
-                )]
+                return [TextContent(type="text", text=f"Error generating report: {str(e)}")]
 
-        @self.server.tool(
-            name="list_templates",
-            description="List available report templates"
-        )
+        @self.server.tool(name="list_templates", description="List available report templates")
         async def list_templates(category: str | None = None) -> list[TextContent]:
             """
             List available templates.
@@ -157,19 +154,11 @@ class ReportGeneratorMCPServer:
             if category:
                 templates = [t for t in templates if category.lower() in t["name"].lower()]
 
-            template_list = "\n".join([
-                f"- {t['name']}: {t['description']}" for t in templates
-            ])
+            template_list = "\n".join([f"- {t['name']}: {t['description']}" for t in templates])
 
-            return [TextContent(
-                type="text",
-                text=f"Available templates:\n{template_list}"
-            )]
+            return [TextContent(type="text", text=f"Available templates:\n{template_list}")]
 
-        @self.server.tool(
-            name="test_datasource",
-            description="Test connectivity to a data source"
-        )
+        @self.server.tool(name="test_datasource", description="Test connectivity to a data source")
         async def test_datasource(source_config: dict[str, Any]) -> list[TextContent]:
             """
             Test data source connection.
@@ -186,37 +175,31 @@ class ReportGeneratorMCPServer:
                     ds = DataSource.from_database(
                         connection_string=source_config["connection_string"],
                         query="SELECT 1",
-                        name="test"
+                        name="test",
                     )
                 elif source_type == "api":
                     ds = DataSource.from_api(
                         url=source_config["url"],
                         auth_token=source_config.get("auth_token"),
-                        name="test"
+                        name="test",
                     )
                 elif source_type == "file":
-                    ds = DataSource.from_file(
-                        file_path=source_config["file_path"],
-                        name="test"
-                    )
+                    ds = DataSource.from_file(file_path=source_config["file_path"], name="test")
                 else:
-                    return [TextContent(
-                        type="text",
-                        text=f"❌ Unsupported source type: {source_type}"
-                    )]
+                    return [
+                        TextContent(type="text", text=f"❌ Unsupported source type: {source_type}")
+                    ]
 
                 # Test connection
                 ds.test_connection()
-                return [TextContent(
-                    type="text",
-                    text=f"✅ Connection successful to {source_type} source!"
-                )]
+                return [
+                    TextContent(
+                        type="text", text=f"✅ Connection successful to {source_type} source!"
+                    )
+                ]
 
             except Exception as e:
-                return [TextContent(
-                    type="text",
-                    text=f"❌ Connection failed: {str(e)}"
-                )]
+                return [TextContent(type="text", text=f"❌ Connection failed: {str(e)}")]
 
     def _register_resources(self) -> None:
         """Register MCP resources."""
@@ -225,11 +208,9 @@ class ReportGeneratorMCPServer:
         async def get_recent_reports() -> str:
             """Get list of recently generated reports."""
             # TODO: Implement report history tracking
-            return json.dumps({
-                "reports": [
-                    {"id": "rpt_example", "format": "pdf", "created": "2025-11-19"}
-                ]
-            })
+            return json.dumps(
+                {"reports": [{"id": "rpt_example", "format": "pdf", "created": "2025-11-19"}]}
+            )
 
     async def run(self) -> None:
         """Run the MCP server."""

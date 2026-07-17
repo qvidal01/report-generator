@@ -161,9 +161,7 @@ class ReportEngine:
                 data_frames[key] = df
 
             # Step 2: Combine data (simple concatenation for now)
-            combined_data = (
-                list(data_frames.values())[0] if len(data_frames) == 1 else data_frames
-            )
+            combined_data = list(data_frames.values())[0] if len(data_frames) == 1 else data_frames
 
             # Step 3: Load template if string path provided
             if isinstance(template, str):

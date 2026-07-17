@@ -19,9 +19,7 @@ class FileSource(DataSource):
     Automatically detects file format based on extension.
     """
 
-    def __init__(
-        self, name: str, file_path: str, config: dict[str, Any] | None = None
-    ) -> None:
+    def __init__(self, name: str, file_path: str, config: dict[str, Any] | None = None) -> None:
         """
         Initialize file source.
 
@@ -34,9 +32,7 @@ class FileSource(DataSource):
         self.file_path = Path(file_path)
 
         if not self.file_path.exists():
-            raise DataSourceError(
-                f"File not found: {file_path}", source_type="file"
-            )
+            raise DataSourceError(f"File not found: {file_path}", source_type="file")
 
     def fetch(self) -> pd.DataFrame:
         """

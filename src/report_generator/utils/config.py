@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 from pydantic import Field
@@ -37,9 +37,7 @@ class Config(BaseSettings):
     database_url: str | None = Field(default=None, description="Database connection URL")
 
     # Redis
-    redis_url: str = Field(
-        default="redis://localhost:6379/0", description="Redis connection URL"
-    )
+    redis_url: str = Field(default="redis://localhost:6379/0", description="Redis connection URL")
 
     # Email/SMTP
     smtp_host: str | None = Field(default=None, description="SMTP server host")
@@ -81,9 +79,9 @@ def load_config(config_path: str | Path) -> dict[str, Any]:
     try:
         with open(path, encoding="utf-8") as f:
             if path.suffix in [".yaml", ".yml"]:
-                return yaml.safe_load(f) or {}
+                return cast(dict[str, Any], yaml.safe_load(f) or {})
             elif path.suffix == ".json":
-                return json.load(f)
+                return cast(dict[str, Any], json.load(f))
             else:
                 raise ConfigurationError(
                     f"Unsupported configuration file format: {path.suffix}. "
@@ -94,9 +92,7 @@ def load_config(config_path: str | Path) -> dict[str, Any]:
     except json.JSONDecodeError as e:
         raise ConfigurationError(f"Invalid JSON syntax in {config_path}: {e}") from e
     except Exception as e:
-        raise ConfigurationError(
-            f"Error loading configuration from {config_path}: {e}"
-        ) from e
+        raise ConfigurationError(f"Error loading configuration from {config_path}: {e}") from e
 
 
 def get_config() -> Config:

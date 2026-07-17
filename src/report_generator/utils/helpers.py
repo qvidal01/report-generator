@@ -80,6 +80,7 @@ def format_timestamp(dt: datetime | None = None) -> str:
     """
     if dt is None:
         from datetime import timezone
+
         dt = datetime.now(timezone.utc)
     return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 

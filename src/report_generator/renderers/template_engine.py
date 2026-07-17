@@ -1,7 +1,7 @@
 """Template rendering with Jinja2."""
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from jinja2 import select_autoescape
 from jinja2.sandbox import SandboxedEnvironment
@@ -19,7 +19,9 @@ class Template:
     Provides sandboxed template rendering for security.
     """
 
-    def __init__(self, template_string: str | None = None, template_path: Path | None = None) -> None:
+    def __init__(
+        self, template_string: str | None = None, template_path: Path | None = None
+    ) -> None:
         """
         Initialize template.
 
@@ -140,7 +142,7 @@ class Template:
             from weasyprint import HTML
 
             logger.info("generating_pdf", html_length=len(html))
-            pdf_bytes = HTML(string=html).write_pdf()
+            pdf_bytes = cast(bytes, HTML(string=html).write_pdf())
             logger.info("pdf_generated", pdf_size_bytes=len(pdf_bytes))
             return pdf_bytes
         except ImportError:
