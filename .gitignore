@@ -102,3 +102,4 @@ credentials.json
 
 # AI Tasks
 .ai-tasks/
+.mcp.json
